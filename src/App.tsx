@@ -12,42 +12,33 @@ import NotFoundView from './views/NotFoundView';
 
 export const App: React.FC = () => {
   return (
-
-    <div className="min-h-screen bg-[#3a6ea5] bg-opacity-95 text-[#2d3748] flex flex-col justify-between py-6 px-2 sm:px-6">
-      
-
-      <div className="w-full max-w-5xl mx-auto flex flex-col flex-1">
+    <div className="min-h-screen bg-slate-950 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black text-[#2d3748] flex flex-col justify-between py-4 sm:py-8 px-2 sm:px-6">
+      {/* Carcasa exterior de la Pokédex */}
+      <div className="w-full max-w-6xl mx-auto flex flex-col flex-1 bg-gradient-to-b from-rose-600 via-red-600 to-rose-800 p-2.5 sm:p-4 md:p-5 rounded-[2rem] sm:rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(225,29,72,0.5)] border-2 border-rose-400/40 relative">
         
-
+        {/* Módulo superior: Lente y Navegación */}
         <Navbar />
 
-
-
-        <div className="relative bg-[#fbf7ed] border-4 border-[#2d3748] rounded-2xl shadow-2xl flex-1 flex flex-col overflow-hidden">
+        {/* Bisel de la pantalla principal */}
+        <div className="relative bg-slate-950 p-2 sm:p-3.5 rounded-2xl sm:rounded-3xl border-2 border-slate-800 shadow-2xl flex-1 flex flex-col">
           
-
-          <div className="absolute left-2 top-0 bottom-0 w-8 flex flex-col justify-around py-4 z-20 pointer-events-none select-none">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="flex items-center">
-                <div className="w-3 h-3 rounded-full bg-[#1e293b] shadow-inner"></div>
-                <div className="w-6 h-2 bg-gradient-to-r from-gray-400 via-gray-200 to-gray-500 rounded-full -ml-1.5 shadow-md"></div>
-              </div>
-            ))}
+          {/* Pantalla interna de la Pokédex */}
+          <div className="relative bg-[#fbf7ed] border-2 border-slate-700 rounded-xl sm:rounded-2xl shadow-inner flex-1 flex flex-col overflow-hidden">
+            <main className="px-4 sm:px-8 md:px-10 py-6 flex-1 flex flex-col w-full h-full ">
+              <Routes>
+                <Route path="/" element={<HomeView />} />
+                <Route path="/explorar" element={<ExploreView />} />
+                <Route path="/pokemon/:id" element={<DetailView />} />
+                <Route path="/favoritos" element={<FavoritesView />} />
+                <Route path="/contacto" element={<ContactView />} />
+                <Route path="*" element={<NotFoundView />} />
+              </Routes>
+            </main>
           </div>
-
-          <main className="pl-12 pr-4 sm:px-12 py-6 flex-1 flex flex-col">
-            <Routes>
-              <Route path="/" element={<HomeView />} />
-              <Route path="/explorar" element={<ExploreView />} />
-              <Route path="/pokemon/:id" element={<DetailView />} />
-              <Route path="/favoritos" element={<FavoritesView />} />
-              <Route path="/contacto" element={<ContactView />} />
-              <Route path="*" element={<NotFoundView />} />
-            </Routes>
-          </main>
-
-          <Footer />
         </div>
+
+        {/* Bisel inferior */}
+        <Footer />
       </div>
     </div>
   );

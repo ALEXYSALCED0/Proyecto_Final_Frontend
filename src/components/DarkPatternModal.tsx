@@ -36,15 +36,21 @@ export const DarkPatternModal: React.FC<DarkPatternModalProps> = ({ isOpen, onCl
     }
   }, [isOpen]);
 
+  const handleCancel = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    onClose();
+  };
+
   return (
     <dialog
       ref={dialogRef}
-      className="backdrop:bg-black/75 rounded-2xl p-0 max-w-md w-11/12 mx-auto bg-[#fffdfa] border-4 border-amber-400 shadow-2xl text-[#2d3748]"
+      onCancel={handleCancel}
+      className="fixed inset-0 m-auto h-fit max-w-md w-11/12 backdrop:bg-black/75 rounded-2xl p-0 bg-[#fffdfa] border-4 border-amber-400 shadow-2xl text-[#2d3748]"
       aria-labelledby="promo-title"
     >
       <div className="p-6 text-center space-y-4">
         <span className="inline-block px-3 py-1 bg-amber-100 text-amber-800 border border-amber-300 text-xs font-bold uppercase rounded-full">
-          ¡Oferta Exclusiva de Investigador!
+          ¡Oferta Exclusiva de Entrenador!
         </span>
 
         <h3 id="promo-title" className="text-xl font-black font-mono uppercase text-gray-900">
@@ -52,8 +58,7 @@ export const DarkPatternModal: React.FC<DarkPatternModalProps> = ({ isOpen, onCl
         </h3>
 
         <p className="text-xs text-gray-600 leading-relaxed">
-          Desbloquea ilustraciones holográficas ilimitadas, notas secretas del Profesor y 
-          sincronización en la nube para tu libreta de campo.
+          Desbloquea ilustraciones en alta resolución, datos exclusivos y sincronización en la nube para tu Pokédex.
         </p>
 
         {/* Botón dominante (Call to Action) */}
@@ -72,7 +77,7 @@ export const DarkPatternModal: React.FC<DarkPatternModalProps> = ({ isOpen, onCl
             onClick={onClose}
             className="text-[11px] text-gray-400 hover:text-gray-600 underline transition-colors pt-2"
           >
-            No me interesa, prefiero quedarme como un entrenador novato y perder mis notas
+            No me interesa, prefiero quedarme como un entrenador novato y perder mis datos
           </button>
         </div>
       </div>

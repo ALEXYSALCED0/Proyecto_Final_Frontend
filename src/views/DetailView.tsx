@@ -4,13 +4,15 @@ import type { PokemonDetail } from '../types/pokemon';
 import { useFavorites } from '../context/FavoritesContext';
 import { useToast } from '../components/Toast';
 import { LoadingSpinner } from '../components/LoadingSpinner';
+import { ConfirmModal } from '../components/ConfirmModal';
 
 export default function DetailView() {
   const { id } = useParams<{ id: string }>();
   const [pokemon, setPokemon] = useState<PokemonDetail | null>(null);
-  const [flavorText, setFlavorText] = useState<string>('Espécimen registrado en la libreta de campo.');
+  const [flavorText, setFlavorText] = useState<string>('Datos registrados en la Pokédex.');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
   const { showToast } = useToast();
@@ -27,7 +29,7 @@ export default function DetailView() {
         const data: PokemonDetail = await res.json();
         setPokemon(data);
 
-        // Descripción de campo complementaria
+        // Descripción de la Pokédex
         try {
           const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
           if (speciesRes.ok) {
@@ -43,7 +45,7 @@ export default function DetailView() {
           // Si la especie falla, se preserva el texto por defecto
         }
       } catch (err: unknown) {
-        setError(err instanceof Error ? err.message : 'Error al cargar la ficha');
+        setError(err instanceof Error ? err.message : 'Error al cargar la información');
       } finally {
         setLoading(false);
       }
@@ -52,18 +54,18 @@ export default function DetailView() {
     fetchDetail();
   }, [id]);
 
-  if (loading) return <LoadingSpinner text="Abriendo página de registro de campo..." />;
+  if (loading) return <LoadingSpinner text="Cargando datos de la Pokédex..." />;
 
   if (error || !pokemon) {
     return (
       <div className="text-center p-8 bg-rose-50 border-2 border-rose-300 rounded-xl" role="alert">
-        <h3 className="font-mono font-bold text-rose-800 text-lg">Página de registro dañada</h3>
-        <p className="text-xs text-rose-600 mt-1">{error || 'El espécimen no existe.'}</p>
+        <h3 className="font-mono font-bold text-rose-800 text-lg">Registro no encontrado</h3>
+        <p className="text-xs text-rose-600 mt-1">{error || 'El Pokémon no existe.'}</p>
         <Link
           to="/explorar"
           className="inline-block mt-4 px-4 py-2 bg-stone-700 text-white font-mono text-xs rounded hover:bg-stone-800"
         >
-          ← Volver al explorador
+          ← Volver a Explorar
         </Link>
       </div>
     );
@@ -76,10 +78,10 @@ export default function DetailView() {
   const weightInKg = pokemon.weight / 10;
   const formattedNo = `No. ${String(pokemon.id).padStart(4, '0')}`;
 
-  const toggleFavorite = () => {
+  const handleFavoriteClick = () => {
     if (favorite) {
-      removeFavorite(pokemon.id);
-      showToast(`${pokemon.name.toUpperCase()} desclavado de favoritos`, 'info');
+      // Abre modal de confirmación antes de quitar de favoritos
+      setIsModalOpen(true);
     } else {
       addFavorite({
         id: pokemon.id,
@@ -87,13 +89,19 @@ export default function DetailView() {
         image: officialImage,
         types: pokemon.types.map((t) => t.type.name),
       });
-      showToast(`¡${pokemon.name.toUpperCase()} fijado en la libreta!`, 'success');
+      showToast(`¡${pokemon.name.toUpperCase()} guardado en favoritos!`, 'success');
     }
+  };
+
+  const handleConfirmRemove = () => {
+    removeFavorite(pokemon.id);
+    showToast(`${pokemon.name.toUpperCase()} quitado de favoritos`, 'info');
+    setIsModalOpen(false);
   };
 
   return (
     <article className="space-y-6 max-w-4xl mx-auto">
-      {/* Botón superior de retroceso */}
+      {/* Botón superior de retroceso y acción de favoritos */}
       <div className="flex justify-between items-center">
         <Link
           to="/explorar"
@@ -103,33 +111,33 @@ export default function DetailView() {
         </Link>
         <button
           type="button"
-          onClick={toggleFavorite}
-          className={`px-3 py-1 rounded-full text-xs font-mono font-bold border shadow-xs transition-transform active:scale-95 ${
+          onClick={handleFavoriteClick}
+          className={`px-3 py-1 rounded-full text-xs font-mono font-bold border shadow-xs transition-transform active:scale-95 cursor-pointer ${
             favorite
               ? 'bg-amber-100 text-amber-900 border-amber-400'
               : 'bg-stone-100 text-stone-700 border-stone-300 hover:bg-stone-200'
           }`}
         >
-          {favorite ? '⭐ Guardado en Libreta' : '☆ Marcar como Favorito'}
+          {favorite ? '⭐ Guardado en Favoritos' : '☆ Marcar como Favorito'}
         </button>
       </div>
 
-      {/* Lámina estilo cuaderno de notas (Scrapbook spread) */}
+      {/* Ficha principal con diseño original restaurado */}
       <div className="bg-[#fffef7] border-2 border-[#2d3748] rounded-2xl p-4 sm:p-8 shadow-xl relative overflow-hidden">
-        {/* Adorno superior: Etiqueta adhesiva rosa con el número de serie */}
+        {/* Número de Pokédex */}
         <div className="inline-block bg-rose-500 text-white font-mono font-black text-sm px-4 py-1 rounded shadow -rotate-1 border border-rose-700">
           {formattedNo}
         </div>
 
-        {/* Fila superior: Identidad y Fotografía con chincheta */}
+        {/* Fila superior: Identidad y Fotografía con marco teal y chincheta */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 items-center">
-          {/* Columna Izquierda: Datos taxonómicos */}
+          {/* Columna Izquierda: Datos */}
           <div className="space-y-4">
             <div>
               <p className="text-[11px] font-mono uppercase text-gray-500 tracking-widest">
                 Nombre del Espécimen
               </p>
-              {/* Círculo verde trazado a mano alrededor del nombre */}
+              {/* Círculo verde trazado alrededor del nombre */}
               <div className="inline-block px-5 py-2 mt-1 rounded-full border-2 border-emerald-600 bg-emerald-50/60 -rotate-1 shadow-xs">
                 <h1 className="text-2xl sm:text-3xl font-black font-mono capitalize text-emerald-950">
                   {pokemon.name}
@@ -158,25 +166,25 @@ export default function DetailView() {
             <div className="relative bg-amber-200 p-4 rounded-md shadow-md rotate-1 text-[#2d3748] border border-amber-300 mt-4">
               <div className="absolute -top-3 left-1/3 w-20 h-4 bg-emerald-300/80 border border-emerald-400 rotate-2 pointer-events-none" />
               <p className="font-mono text-[11px] uppercase tracking-wider font-bold text-amber-900 mb-1">
-                Anotación de campo:
+                Descripción Pokédex:
               </p>
               <p className="font-sans text-xs italic leading-relaxed">{flavorText}</p>
             </div>
           </div>
 
-          {/* Columna Derecha: Fotografía polaroid con chincheta roja */}
+          {/* Columna Derecha: Fotografía polaroid con marco teal y chincheta roja (restaurada) */}
           <div className="relative flex justify-center">
             {/* Chincheta roja 📌 */}
             <div className="absolute -top-3 z-20 w-6 h-6 rounded-full bg-rose-600 border-2 border-rose-900 shadow-lg flex items-center justify-center">
               <div className="w-1.5 h-1.5 bg-rose-200 rounded-full" />
             </div>
 
-            {/* Marco de fotografía */}
+            {/* Marco de fotografía teal original */}
             <div className="bg-[#38b2ac] p-4 rounded-xl border-4 border-white shadow-2xl rotate-2 max-w-xs w-full">
               <div className="bg-[#4fd1c5]/30 border-2 border-dashed border-white/60 rounded-lg p-4 flex items-center justify-center">
                 <img
                   src={officialImage}
-                  alt={`Fotografía oficial de campo de ${pokemon.name}`}
+                  alt={`Fotografía oficial de ${pokemon.name}`}
                   className="w-48 h-48 object-contain drop-shadow-2xl"
                 />
               </div>
@@ -184,9 +192,9 @@ export default function DetailView() {
           </div>
         </div>
 
-        {/* Sección inferior: Ficha técnica y estadísticas */}
+        {/* Sección de estadísticas y dimensiones */}
         <div className="mt-8 pt-6 border-t-2 border-dashed border-stone-300 grid grid-cols-1 md:grid-cols-2 gap-6 bg-emerald-700/10 p-4 rounded-xl">
-          {/* Dimensiones físicas y siluetas */}
+          {/* Dimensiones físicas */}
           <div className="space-y-3">
             <h4 className="font-mono font-bold uppercase text-xs text-stone-800 tracking-wider">
               Dimensiones Físicas
@@ -233,6 +241,17 @@ export default function DetailView() {
           </div>
         </div>
       </div>
+
+      {/* Modal de confirmación al quitar de favoritos */}
+      <ConfirmModal
+        isOpen={isModalOpen}
+        title="¿Quitar de favoritos?"
+        message={`¿Estás seguro de que deseas quitar a ${pokemon.name.toUpperCase()} de tus favoritos?`}
+        confirmText="Sí, quitar"
+        cancelText="Cancelar"
+        onConfirm={handleConfirmRemove}
+        onCancel={() => setIsModalOpen(false)}
+      />
     </article>
   );
 }

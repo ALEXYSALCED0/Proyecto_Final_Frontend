@@ -22,7 +22,7 @@ export default function FavoritesView() {
   const handleConfirmRemove = () => {
     if (selectedId !== null) {
       removeFavorite(selectedId);
-      showToast(`${selectedName.toUpperCase()} fue desclavado de la libreta`, 'info');
+      showToast(`${selectedName.toUpperCase()} fue quitado de favoritos`, 'info');
       setSelectedId(null);
       setIsModalOpen(false);
     }
@@ -33,22 +33,22 @@ export default function FavoritesView() {
       <header className="border-b-2 border-stone-300 pb-3 flex justify-between items-end">
         <div>
           <h2 className="text-2xl sm:text-3xl font-black font-mono uppercase text-[#2d3748]">
-            Mis Especímenes Favoritos
+            Mis Favoritos
           </h2>
           <p className="text-xs sm:text-sm text-gray-600 font-sans mt-1">
-            Láminas y observaciones fijadas permanentemente en tu libreta.
+            Pokémon registrados y guardados en tu Pokédex.
           </p>
         </div>
         <span className="font-mono text-xs font-bold bg-amber-100 border border-amber-300 px-3 py-1 rounded-full text-amber-900">
-          {favorites.length} fijados
+          {favorites.length} guardados
         </span>
       </header>
 
       {/* Estado: Empty si no hay favoritos */}
       {favorites.length === 0 ? (
         <EmptyState
-          title="Libreta de favoritos vacía"
-          description="Aún no has fijado ningún Pokémon en tu cuaderno de campo. Explora el catálogo general y agrega tus especímenes preferidos."
+          title="Sin favoritos guardados"
+          description="Aún no has guardado ningún Pokémon en tu Pokédex. Explora la lista completa y agrega tus preferidos."
           actionText="Ir al catálogo"
           actionLink="/explorar"
         />
@@ -66,10 +66,10 @@ export default function FavoritesView() {
                 <button
                   type="button"
                   onClick={() => handleOpenConfirm(poke.id, poke.name)}
-                  aria-label={`Desclavar a ${poke.name} de favoritos`}
-                  className="text-xs font-mono font-bold text-rose-600 hover:text-rose-800 bg-rose-50 px-2 py-1 rounded border border-rose-200"
+                  aria-label={`Quitar a ${poke.name} de favoritos`}
+                  className="text-xs font-mono font-bold text-rose-600 hover:text-rose-800 bg-rose-50 px-2 py-1 rounded border border-rose-200 cursor-pointer"
                 >
-                  Desclavar ✕
+                  Quitar ✕
                 </button>
               </div>
 
@@ -77,7 +77,7 @@ export default function FavoritesView() {
                 <div className="bg-[#f0f9ff] border border-sky-200 rounded-lg p-2 flex items-center justify-center aspect-square">
                   <img
                     src={poke.image}
-                    alt={`Espécimen favorito ${poke.name}`}
+                    alt={`Pokémon favorito ${poke.name}`}
                     className="w-24 h-24 object-contain"
                   />
                 </div>
@@ -101,13 +101,13 @@ export default function FavoritesView() {
         </div>
       )}
 
-      {/* Modal de confirmación nativo <dialog> + useRef */}
+      {/* Modal de confirmación */}
       <ConfirmModal
         isOpen={isModalOpen}
-        title="¿Desclavar de la libreta?"
-        message={`¿Estás seguro de retirar a ${selectedName.toUpperCase()} de tus páginas de campo?`}
-        confirmText="Sí, retirar"
-        cancelText="Conservar"
+        title="¿Quitar de favoritos?"
+        message={`¿Estás seguro de que deseas quitar a ${selectedName.toUpperCase()} de tus favoritos?`}
+        confirmText="Sí, quitar"
+        cancelText="Cancelar"
         onConfirm={handleConfirmRemove}
         onCancel={() => setIsModalOpen(false)}
       />

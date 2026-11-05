@@ -20,10 +20,10 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({ id, name, image, types
     e.stopPropagation();
     if (favorite) {
       removeFavorite(id);
-      showToast(`${name.toUpperCase()} desclavado de favoritos`, 'info');
+      showToast(`${name.toUpperCase()} quitado de favoritos`, 'info');
     } else {
       addFavorite({ id, name, image, types });
-      showToast(`¡${name.toUpperCase()} pegado en tu libreta!`, 'success');
+      showToast(`¡${name.toUpperCase()} guardado en favoritos!`, 'success');
     }
   };
 
@@ -43,7 +43,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({ id, name, image, types
           type="button"
           onClick={handleFavoriteClick}
           aria-label={favorite ? `Quitar a ${name} de favoritos` : `Agregar a ${name} a favoritos`}
-          className="text-xl leading-none transition-transform active:scale-125 focus:outline-hidden"
+          className="text-xl leading-none transition-transform active:scale-125 focus:outline-hidden cursor-pointer"
         >
           {favorite ? '⭐' : '☆'}
         </button>
@@ -54,13 +54,13 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({ id, name, image, types
         <div className="bg-[#e9f5ee] border border-[#cbd5e1] rounded-lg p-2 flex items-center justify-center overflow-hidden aspect-square">
           <img
             src={image}
-            alt={`Ilustración de campo de ${name}`}
+            alt={`Ilustración de ${name}`}
             loading="lazy"
             className="w-28 h-28 object-contain drop-shadow group-hover:scale-110 transition-transform duration-200"
           />
         </div>
 
-        {/* Nombre en letra manuscrita/destacada */}
+        {/* Nombre en letra destacada */}
         <h3 className="text-center font-black font-mono capitalize text-sm sm:text-base text-[#2d3748] mt-2 group-hover:text-emerald-700 transition-colors">
           {name}
         </h3>

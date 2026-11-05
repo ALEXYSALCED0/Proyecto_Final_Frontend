@@ -61,10 +61,10 @@ export default function ExploreView() {
       {/* Título de la página de catálogo */}
       <header className="border-b-2 border-stone-300 pb-3">
         <h2 className="text-2xl sm:text-3xl font-black font-mono uppercase text-[#2d3748]">
-          Catálogo de Especímenes
+          Explorar Pokédex
         </h2>
         <p className="text-xs sm:text-sm text-gray-600 font-sans mt-1">
-          Archivador de avistamientos documentados en la región.
+          Catálogo de Pokémon registrados en la Pokédex.
         </p>
       </header>
 
@@ -104,19 +104,19 @@ export default function ExploreView() {
       </div>
 
       {/* Estado: Loading */}
-      {loading && <LoadingSpinner text="Recopilando fichas del archivador..." />}
+      {loading && <LoadingSpinner text="Cargando datos de la Pokédex..." />}
 
       {/* Estado: Error */}
       {error && !loading && (
         <div className="bg-rose-50 border-2 border-rose-400 p-6 rounded-xl text-center" role="alert">
-          <p className="font-mono font-bold text-rose-800">No se pudieron recuperar las notas de campo.</p>
+          <p className="font-mono font-bold text-rose-800">No se pudieron recuperar los datos de la Pokédex.</p>
           <p className="text-xs text-rose-600 mt-1">{error}</p>
           <button
             type="button"
             onClick={fetchPokemon}
             className="mt-4 px-4 py-2 bg-rose-600 text-white font-mono text-xs uppercase font-bold rounded shadow hover:bg-rose-700"
           >
-            Reintentar lectura
+            Reintentar
           </button>
         </div>
       )}

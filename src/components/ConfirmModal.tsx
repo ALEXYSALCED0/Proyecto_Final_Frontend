@@ -14,7 +14,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   isOpen,
   title,
   message,
-  confirmText = 'Sí, desclavar',
+  confirmText = 'Sí, quitar',
   cancelText = 'Cancelar',
   onConfirm,
   onCancel,
@@ -36,7 +36,6 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
     }
   }, [isOpen]);
 
-  // Manejo de la tecla Escape nativa del navegador
   const handleCancel = (e: React.SyntheticEvent) => {
     e.preventDefault();
     onCancel();
@@ -46,7 +45,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
     <dialog
       ref={dialogRef}
       onCancel={handleCancel}
-      className="backdrop:bg-black/60 rounded-xl p-0 shadow-2xl border-2 border-[#2d3748] bg-[#fbf7ed] max-w-sm w-11/12 mx-auto open:animate-in open:fade-in open:zoom-in-95 text-[#2d3748]"
+      className="fixed inset-0 m-auto h-fit max-w-sm w-11/12 backdrop:bg-black/60 rounded-xl p-0 shadow-2xl border-2 border-[#2d3748] bg-[#fbf7ed] open:animate-in open:fade-in open:zoom-in-95 text-[#2d3748]"
       aria-labelledby="confirm-modal-title"
       aria-describedby="confirm-modal-desc"
     >
@@ -66,14 +65,14 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 text-xs font-bold text-gray-600 bg-stone-200 hover:bg-stone-300 rounded border border-stone-400 transition-colors"
+            className="px-4 py-2 text-xs font-bold text-gray-600 bg-stone-200 hover:bg-stone-300 rounded border border-stone-400 transition-colors cursor-pointer"
           >
             {cancelText}
           </button>
           <button
             type="button"
             onClick={onConfirm}
-            className="px-4 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded border border-rose-800 shadow transition-transform active:scale-95"
+            className="px-4 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded border border-rose-800 shadow transition-transform active:scale-95 cursor-pointer"
           >
             {confirmText}
           </button>

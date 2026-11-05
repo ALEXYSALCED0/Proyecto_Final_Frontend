@@ -2,13 +2,26 @@ import React from 'react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="w-full max-w-5xl mx-auto py-6 px-4 mt-12 border-t-2 border-dashed border-[#b8ae98] text-center text-xs md:text-sm text-[#736853]">
-      <p className="font-mono">
-        © 2026 PokéDex Scrapbook — Registro de Avistamientos y Estadísticas
-      </p>
-      <p className="text-[11px] text-gray-500 mt-1">
-        Construido con React, TypeScript, Tailwind CSS & PokeAPI
-      </p>
+    <footer className="w-full mt-3 bg-slate-950/95 border-2 border-slate-800 rounded-2xl px-4 py-3 text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-3">
+      {/* Rejilla de altavoz y sensor de la Pokédex */}
+      <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5" aria-hidden="true">
+          <span className="w-5 h-1.5 rounded-full bg-slate-700 shadow-inner" />
+          <span className="w-5 h-1.5 rounded-full bg-slate-700 shadow-inner" />
+          <span className="w-5 h-1.5 rounded-full bg-slate-700 shadow-inner" />
+        </div>
+        <span className="text-xs font-mono uppercase tracking-wider text-slate-300 font-bold flex items-center gap-1.5">
+          <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee]" />
+          POKÉDEX
+        </span>
+      </div>
+
+      {/* Créditos */}
+      <div className="text-center sm:text-right">
+        <p className="font-mono text-xs text-slate-400">
+          PokeAPI • React • TypeScript • Tailwind CSS
+        </p>
+      </div>
     </footer>
   );
 };
