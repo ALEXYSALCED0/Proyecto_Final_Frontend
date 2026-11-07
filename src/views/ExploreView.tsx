@@ -18,7 +18,7 @@ export default function ExploreView() {
       setError(null);
       
       // Fetch de lista inicial (primer endpoint requerido: limit=50)
-      const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=50');
+      const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1000');
       if (!res.ok) throw new Error(`Error en la petición: ${res.status}`);
       const data = await res.json();
 
