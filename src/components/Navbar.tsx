@@ -4,17 +4,16 @@ import { Home, Compass, Star, Mail } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const getTabClass = ({ isActive }: { isActive: boolean }) =>
-    `flex items-center gap-2 px-3.5 py-2 text-xs sm:text-sm font-mono font-bold tracking-wide transition-all duration-200 rounded-xl border ${
-      isActive
-        ? 'bg-gradient-to-r from-cyan-400 to-sky-500 text-slate-950 border-cyan-200 shadow-[0_0_16px_rgba(56,189,248,0.55)] scale-[1.02]'
-        : 'bg-slate-900/90 text-slate-300 border-slate-700/80 hover:bg-slate-800 hover:text-cyan-300 hover:border-cyan-500/40'
+    `flex items-center gap-2 px-3.5 py-2 text-xs sm:text-sm font-mono font-bold tracking-wide transition-all duration-200 rounded-xl border ${isActive
+      ? 'bg-gradient-to-r from-cyan-400 to-sky-500 text-slate-950 border-cyan-200 shadow-[0_0_16px_rgba(56,189,248,0.55)] scale-[1.02]'
+      : 'bg-slate-900/90 text-slate-300 border-slate-700/80 hover:bg-slate-800 hover:text-cyan-300 hover:border-cyan-500/40'
     }`;
 
   return (
     <header className="w-full mb-3">
       {/* Bisel superior de la Pokédex */}
       <div className="bg-slate-950/95 backdrop-blur-md border-2 border-slate-800 rounded-2xl p-3 sm:px-5 sm:py-3.5 shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
-        
+
         {/* Lente principal e indicador */}
         <div className="flex items-center justify-between w-full md:w-auto gap-3">
           <Link
